@@ -1,0 +1,23 @@
+{
+  "manifest_version": 2,
+  "name": "Open Tabs",
+  "short_name": "Open Tabs",
+  "description": "Open Tabs lets you create groups of tabs, save them across multiple devices, and reopen later.",
+  "version": "1.0.1",
+  "homepage_url": "http://www.opentabs.io/",
+  "offline_enabled": true,
+  "permissions": [ "activeTab", "tabs", "storage" ],
+  "browser_action": {
+    "default_title": "Open Tabs Manager",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "19": "images/icons/icon19.png",
+      "38": "images/icons/icon19@2x.png"
+    }
+  },
+  "icons": {
+    "16": "images/icons/icon16.png",
+    "48": "images/icons/icon16@3x.png",
+    "128": "images/icons/icon16@8x.png"
+  }
+}

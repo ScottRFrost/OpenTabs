@@ -1,0 +1,174 @@
+ <!doctype html>
+<html>
+  <head>
+    <title>Open Tabs</title>
+    <style>
+      @font-face {
+        font-family: 'Visby Medium';
+        src: url('fonts/VisbyCF-Medium.woff2') format('woff2');
+      }
+      @font-face {
+        font-family: 'Visby Light Oblique';
+        src: url('fonts/VisbyCF-LightOblique.woff2') format('woff2');
+      }
+      body {
+        width: 300px;
+        margin: 0;
+        border: 5px solid white;
+        padding: 20px;
+        background: #EFEFF4;
+      }
+      #error-message {
+        background: #c11553;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+      }
+      #error-message p {
+        font-family: 'Visby Medium';
+        color: white;
+        font-size: 1.4em;
+        text-align: center;
+        margin: 0 auto;
+        width: 80%;
+        padding: 15px 0;
+        letter-spacing: 1px;
+      }
+      #group-list p {
+        font-family: 'Visby Medium';
+        color: #041B29;
+        text-align: center;
+        font-size: 1.8em;
+        margin: 0 auto;
+        width: 80%;
+        height: 72px;
+      }
+      .group {
+        background: #041B29;
+        margin-bottom: 20px;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+      }
+      .group-container {
+        cursor: pointer;
+      }
+      .group-editor {
+        margin-top: 20px;
+      }
+      .group h1 {
+        font-family: 'Visby Medium';
+        letter-spacing: 1.5px;
+        font-size: 1.8em;
+        margin: 0;
+        margin-bottom: 4px;
+        color: #FFF;
+      }
+      .group h2 {
+        color: #FFF;
+        font-family: 'Visby Light Oblique';
+        font-size: 1.6em;
+        margin: 0;
+        letter-spacing: 1px;
+      }
+      .group-editor-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 20px;
+      }
+      .group-editor-button {
+        width: 120px;
+        border-bottom: 2px solid #FFF;
+        height: 80px;
+        cursor: pointer;
+        transition: 0.1s;
+      }
+      .group-editor-button:hover {
+        border-bottom: 5px solid #FFF;
+      }
+      .group-editor-button h1 {
+        font-size: 1.6em;
+      }
+      .group-editor-button h2 {
+        font-size: 1.2em;
+        font-family: 'Visby Medium';
+      }
+      #create-group-prompt input {
+        font-family: 'Visby Medium';
+        font-size: 1.8em;
+        outline: none;
+        letter-spacing: 1.5px;
+        border: none;
+        background: none;
+        width: 230px;
+        color: #FFF;
+      }
+      #create-group-prompt input::-webkit-input-placeholder {
+        color: #FFF;
+      }
+      #toggle-create-group-prompt-button {
+        position: fixed;
+        right: 25px;
+        bottom: 25px;
+        height: 40px;
+        width: 40px;
+        background: #041B29;
+        border: 2px solid #FFF;
+        border-radius: 100%;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        cursor: pointer;
+        z-index: 1;
+        padding: 10px;
+        box-sizing: border-box;
+      }
+      #toggle-create-group-prompt-button img {
+        transition: 0.2s;
+      }
+      footer {
+        margin-top: 100px;
+        width: 250px;
+        padding-top: 3px;
+        border-top: 2px solid #041B29;
+      }
+      footer a {
+        font-family: 'Visby Medium';
+        font-size: 1.3em;
+        text-decoration: none;
+        color: #041B29;
+        margin-right: 10px;
+        letter-spacing: 1px;
+        outline: none;
+      }
+      footer a:hover {
+        text-decoration: underline;
+      }
+      .rotate45 {
+        transform: rotate(45deg);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="error-message">
+      <p></p>
+    </div>
+    <div id="group-list">
+      <p>Use the + button below to create a new group with all the tabs in this window.</p>
+      <div id="groups"></div>
+    </div>
+    <div id="create-group-prompt" class="group">
+      <input type="text" placeholder="New Group">
+      <h2></h2>
+    </div>
+    <div id="toggle-create-group-prompt-button">
+      <img src="images/ui/plus-icon.png">
+    </div>
+    <footer>
+      <a href="http://www.OpenTabs.io/" target="_blank">About</a>
+      <a href="http://www.OpenTabs.io/help" target="_blank">Help</a>
+    </footer>
+    <script src="js/jquery-3.1.1.min.js"></script>
+    <script src="js/popup.js"></script>
+  </body>
+</html>
