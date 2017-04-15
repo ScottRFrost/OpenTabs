@@ -1,6 +1,35 @@
+const themes = [
+  {
+    name: 'Pure',
+    color1: '#0000FF',
+    color2: '#000000'
+  },{
+    name: 'Depth',
+    color1: '#04E0E4',
+    color2: '#08093F'
+  },{
+    name: 'Popsicle',
+    color1: '#FE2851',
+    color2: '#29C5FF'
+  },{
+    name: 'Jazz',
+    color1: '#E10F5D',
+    color2: '#03043C'
+  },{
+    name: 'Sand',
+    color1: '#E26E43',
+    color2: '#ED2962'
+  },{
+    name: 'Night',
+    color1: '#1B0068',
+    color2: '#08000C'
+  }
+];
+
 $(document).ready(() => {
   $('#toggle-create-group-prompt-button').on('click', () => { toggleCreateGroupPrompt(); });
   $('#create-group-prompt input').on('keyup', e => { createGroup(e); });
+  $('#create-group-prompt img').on('click', () => { createGroup({ keyCode: 13 }); });
   $('#options-link').on('click', () => { chrome.runtime.openOptionsPage(); });
 
   initWindow();
@@ -11,6 +40,32 @@ function initWindow() {
   $('#create-group-prompt').hide();
 
   initDatabase();
+  setUpUIWithTheme();
+}
+
+function setUpUIWithTheme() {
+  getTheme(themeName => {
+    themes.find(theme => {
+      if (theme.name == themeName) {
+        $('body').css('backgroundImage', `-webkit-linear-gradient(${theme.color1} 0%, ${theme.color2} 100%)`);
+        $('body').css('backgroundImage', `-o-linear-gradient(${theme.color1} 0%, ${theme.color2} 100%)`);
+        $('body').css('backgroundImage', `linear-gradient(${theme.color1} 0%, ${theme.color2} 100%)`);
+        return;
+      }
+    });
+  });
+}
+
+function getOptionsObject(callback) {
+  chrome.storage.sync.get('options', options => {
+    callback(options);
+  });
+}
+
+function getTheme(callback) {
+  getOptionsObject(options => {
+    callback(options.options.theme);
+  });
 }
 
 function initDatabase() {
@@ -49,7 +104,8 @@ function renderGroupList() {
 function initGroups() {
   $('.group-editor').hide();
 
-  $('.group-container').on('click', function() {
+  $('.group-info').on('click', function() {
+    $(this).children('img').toggleClass('rotate90');
     $(this).next().slideToggle(200);
   });
 
@@ -111,7 +167,7 @@ function updateGroupList(groups) {
   }, () => {
     if (chrome.runtime.lastError) {
       console.error('Update failed: ' + chrome.runtime.lastError.message);
-      displayErrorWithMessage('Your group list couldn\'t be updated!');
+      displayErrorWithMessage('Your groups couldn\'t be updated.');
     }
   });
 }
@@ -141,7 +197,7 @@ function findGroupByName(name, groups, callback) {
 }
 
 function getGroupName(element) {
-  return element.parent().parent().parent().prev().children('h1').html();
+  return element.parent().parent().parent().prev().children('div').children('h1').html();
 }
 
 function toggleCreateGroupPrompt() {
@@ -158,7 +214,7 @@ function createGroup(key) {
       groupNameRepeats(inputValue, groups, repeats => {
         if (repeats) {
           canSave = false;
-          displayErrorWithMessage('Another group already has this name!');
+          displayErrorWithMessage('Another group already has this name.');
         }
       });
       if (canSave) {
@@ -166,9 +222,12 @@ function createGroup(key) {
           saveGroup(inputValue, compressTabs(tabs));
           togglePromptButtonRotation();
           togglePromptVisibility();
+          $('html, body').animate({ scrollTop: $(document).height() }, 200);
         });
       }
     });
+  } else {
+    $('#create-group-prompt input').focus();
   }
 }
 
@@ -180,7 +239,7 @@ function saveGroup(name, tabs) {
     }, () => {
       if (chrome.runtime.lastError) {
         console.error('Save failed: ' + chrome.runtime.lastError.message);
-        displayErrorWithMessage('This group couldn\'t be saved!');
+        displayErrorWithMessage('This group couldn\'t be saved.');
       }
     });
     renderGroupList();
@@ -188,7 +247,7 @@ function saveGroup(name, tabs) {
 }
 
 function displayErrorWithMessage(message) {
-  $('#error-message p').html(`Error: ${message}`);
+  $('#error-message p').html(`Error! ${message}`);
   $('#error-message').slideDown(200).delay(4000).slideUp(200);
 }
 
@@ -235,18 +294,21 @@ function getGroups(callback) {
 function createGroupsListMarkup(groups) {
   return groups.map(group => `
     <div class="group">
-      <div class="group-container">
-        <h1>${group.name}</h1>
-        <h2>${group.tabs.length} Tabs</h2>
+      <div class="group-info">
+        <div>
+          <h1>${group.name}</h1>
+          <h2>${pluralizeTabsString(group.tabs.length)}</h2>
+        </div>
+        <img src="images/ui/arrow.svg">
       </div>
       <div class="group-editor">
         <div class="group-editor-buttons">
           <div class="group-editor-row">
-            <div class="group-editor-button open-group-button">
+            <div class="first-group-editor-button group-editor-button open-group-button">
               <h1>Open</h1>
               <h2>this group in a new window.</h2>
             </div>
-            <div class="group-editor-button add-tab-button">
+            <div class="first-group-editor-button group-editor-button add-tab-button">
               <h1>Add</h1>
               <h2>the current tab to this group.</h2>
             </div>
@@ -267,9 +329,21 @@ function createGroupsListMarkup(groups) {
   `).join('');
 }
 
+function pluralizeTabsString(numberOfTabs) {
+    if (numberOfTabs > 1) {
+      return `${numberOfTabs} Tabs`;
+    } else {
+      return '1 Tab'
+    }
+}
+
 function setPromptSubtitle() {
   getTabsInCurrentWindow(tabs => {
-    $('#create-group-prompt h2').html(`${tabs.length} Tabs`);
+    if (tabs.length > 1) {
+      $('#create-group-prompt div h2').html(`${tabs.length} Tabs`);
+    } else {
+      $('#create-group-prompt div h2').html(`${tabs.length} Tab`);
+    }
   });
 }
 

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="7px" height="12px" viewBox="0 0 7 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>arrow</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Welcome" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="arrow" fill="#FFFFFF">
+            <path d="M-2.35355339,2.02512627 L5.59619408,2.02512627 L5.59619408,9.97487373 L-2.35355339,9.97487373 L-2.35355339,2.02512627 Z M-0.763603897,2.02512627 L-0.763603897,8.38492424 L5.59619408,8.38492424 L5.59619408,2.02512627 L-0.763603897,2.02512627 Z" id="Combined-Shape-Copy" transform="translate(1.621320, 6.000000) rotate(-135.000000) translate(-1.621320, -6.000000) "></path>
+        </g>
+    </g>
+</svg>

@@ -4,71 +4,101 @@
     <title>Open Tabs</title>
     <style>
       @font-face {
+        font-family: 'Visby DemiBold';
+        src: url('fonts/VisbyCF-DemiBold.woff2') format('woff2');
+      }
+      @font-face {
         font-family: 'Visby Medium';
         src: url('fonts/VisbyCF-Medium.woff2') format('woff2');
       }
       @font-face {
-        font-family: 'Visby Light Oblique';
-        src: url('fonts/VisbyCF-LightOblique.woff2') format('woff2');
+        font-family: 'Visby Light';
+        src: url('fonts/VisbyCF-Light.woff2') format('woff2');
       }
       body {
-        width: 300px;
+        width: 350px;
         margin: 0;
-        border: 5px solid white;
-        padding: 20px;
-        background: #EFEFF4;
       }
-      #error-message {
-        background: #c11553;
+      header {
+        display: flex;
+        justify-content:space-between;
+        align-items: center;
+        padding: 0 16px;
+        height: 60px;
+        background: #FFF;
         position: fixed;
         top: 0;
         left: 0;
         right: 0;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
       }
-      #error-message p {
-        font-family: 'Visby Medium';
-        color: white;
-        font-size: 1.4em;
-        text-align: center;
-        margin: 0 auto;
-        width: 80%;
-        padding: 15px 0;
+      header h1 {
+        margin: 0;
+        font-family: 'Visby DemiBold';
+        font-size: 32px;
         letter-spacing: 1px;
       }
-      #group-list p {
-        font-family: 'Visby Medium';
-        color: #041B29;
+      header img {
+        cursor: pointer;
+        transition: 0.2s;
+        fill: black;
+      }
+      #error-message {
+        background: black;
+        position: fixed;
+        top: 60px;
+        left: 0;
+        right: 0;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        padding: 16px;
+      }
+      #error-message p {
+        font-family: 'Visby Light';
+        color: white;
+        font-size: 16px;
         text-align: center;
-        font-size: 1.8em;
         margin: 0 auto;
+        letter-spacing: 1px;
+      }
+      #group-list {
+        margin-top: 76px;
+        padding: 0 16px;
+      }
+      #group-list p {
+        font-family: 'Visby Light';
+        color: #FFF;
+        text-align: center;
+        font-size: 20px;
+        margin: 80px auto;
         width: 80%;
-        height: 72px;
+        letter-spacing: 0.8px;
       }
       .group {
-        background: #041B29;
-        margin-bottom: 20px;
-        padding: 20px;
-        border-radius: 5px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        margin-bottom: 16px;
+        border-bottom: 2px solid white;
       }
-      .group-container {
+      .group-info {
         cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: 18px;
       }
-      .group-editor {
-        margin-top: 20px;
+      .group-info img {
+        width: 8px;
+        transition: 0.2s;
       }
       .group h1 {
         font-family: 'Visby Medium';
-        letter-spacing: 1.5px;
-        font-size: 1.8em;
+        letter-spacing: 1px;
+        font-size: 24px;
         margin: 0;
-        margin-bottom: 4px;
         color: #FFF;
       }
       .group h2 {
         color: #FFF;
-        font-family: 'Visby Light Oblique';
-        font-size: 1.6em;
+        font-family: 'Visby Light';
+        font-size: 18px;
         margin: 0;
         letter-spacing: 1px;
       }
@@ -76,69 +106,82 @@
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
-        margin-bottom: 20px;
       }
       .group-editor-button {
-        width: 120px;
-        border-bottom: 2px solid #FFF;
-        height: 80px;
         cursor: pointer;
-        transition: 0.1s;
+        width: 46%;
+        position: relative;
+        margin-bottom: 18px;
+        border-radius: 5px;
+        transition: 0.15s;
       }
       .group-editor-button:hover {
-        border-bottom: 5px solid #FFF;
+        background: rgba(255, 255, 255, 0.2);
+      }
+      .first-group-editor-button {
+        margin-bottom: 26px;
+      }
+      .first-group-editor-button::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -15px;
+        height: 2px;
+        width: 30px;
+        background: white;
       }
       .group-editor-button h1 {
-        font-size: 1.6em;
+        font-size: 20px;
       }
       .group-editor-button h2 {
-        font-size: 1.2em;
-        font-family: 'Visby Medium';
+        font-size: 16px;
+      }
+      #create-group-prompt {
+        padding: 0 16px;
+        border-bottom: none;
+        display: flex;
+        justify-content: space-between;
+      }
+      #create-group-prompt div {
+        flex: 1;
+        padding-right: 24px;
+      }
+      #create-group-prompt img {
+        width: 30px;
+        cursor: pointer;
       }
       #create-group-prompt input {
         font-family: 'Visby Medium';
-        font-size: 1.8em;
+        font-size: 24px;
         outline: none;
-        letter-spacing: 1.5px;
+        letter-spacing: 1px;
         border: none;
         background: none;
-        width: 230px;
+        width: 100%;
         color: #FFF;
       }
       #create-group-prompt input::-webkit-input-placeholder {
-        color: #FFF;
+        color: rgba(255, 255, 255, 0.8);
       }
-      #toggle-create-group-prompt-button {
-        position: fixed;
-        right: 25px;
-        bottom: 25px;
-        height: 40px;
-        width: 40px;
-        background: #041B29;
-        border: 2px solid #FFF;
-        border-radius: 100%;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-        cursor: pointer;
-        z-index: 1;
-        padding: 10px;
-        box-sizing: border-box;
-      }
-      #toggle-create-group-prompt-button img {
-        transition: 0.2s;
+      #create-group-prompt h2 {
+        color: rgba(255, 255, 255, 0.8);
+        width: 100%;
       }
       footer {
-        margin-top: 100px;
-        width: 250px;
-        padding-top: 3px;
-        border-top: 2px solid #041B29;
+        margin-top: 20px;
+        background: white;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
       footer a {
-        font-family: 'Visby Medium';
-        font-size: 1.3em;
         text-decoration: none;
-        color: #041B29;
-        margin-right: 10px;
-        letter-spacing: 1px;
+        color: black;
+        font-family: 'Visby DemiBold';
+        font-size: 18px;
+        margin: 0 10px;
+        letter-spacing: 0.5px;
         outline: none;
       }
       footer a:hover {
@@ -147,26 +190,36 @@
       .rotate45 {
         transform: rotate(45deg);
       }
+      .rotate90 {
+        transform: rotate(90deg);
+      }
     </style>
   </head>
   <body>
     <div id="error-message">
       <p></p>
     </div>
+    <header>
+      <h1>Your Groups</h1>
+      <div id="toggle-create-group-prompt-button">
+        <img src="images/ui/add.svg">
+      </div>
+    </header>
     <div id="group-list">
-      <p>Use the + button below to create a new group with all the tabs in this window.</p>
+      <p>Get started with the + button above to create a new group with all the tabs in this window.</p>
       <div id="groups"></div>
     </div>
     <div id="create-group-prompt" class="group">
-      <input type="text" placeholder="New Group">
-      <h2></h2>
-    </div>
-    <div id="toggle-create-group-prompt-button">
-      <img src="images/ui/plus-icon.png">
+      <div>
+        <input type="text" placeholder="New Group">
+        <h2></h2>
+      </div>
+      <img src="images/ui/create.svg">
     </div>
     <footer>
       <a href="http://www.OpenTabs.io/" target="_blank">About</a>
-      <a href="http://www.OpenTabs.io/help" target="_blank">Help</a>
+      <a id="options-link" href="#">Themes</a>
+      <a href="http://www.OpenTabs.io/help.html" target="_blank">Help</a>
     </footer>
     <script src="js/jquery-3.1.1.min.js"></script>
     <script src="js/popup.js"></script>
