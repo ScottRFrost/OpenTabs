@@ -109,6 +109,31 @@ function initGroups() {
     $(this).next().slideToggle(200);
   });
 
+  $('.replace-group-button').on('click', function() {
+    const groupName = getGroupName($(this));
+    chrome.tabs.query(
+        {pinned: false, currentWindow: true},
+        function(tabs) {
+          getGroups(groups => {
+            findGroupByName(groupName, groups, group => {
+              let urls = [];
+              group.tabs.map(tab => {
+                urls.push(tab.url);
+              });
+              // Load saved tabs
+              for (var i = 0; i < urls.length; i++) {
+                chrome.tabs.create({ url: urls[i] });
+              }
+
+              // Close old tabs (this has to come after load new tabs in case they had 0 pinned tabs because the closes would then close the window)
+              for (var i = 0; i < tabs.length; i++) {
+              chrome.tabs.remove(tabs[i].id);
+              }
+            });
+          });
+        });
+  });
+
   $('.open-group-button').on('click', function() {
     const groupName = getGroupName($(this));
     getGroups(groups => {
@@ -308,16 +333,22 @@ function createGroupsListMarkup(groups) {
               <h1>Open</h1>
               <h2>this group in a new window.</h2>
             </div>
+            <div class="first-group-editor-button group-editor-button replace-group-button">
+              <h1>Replace</h1>
+              <h2>current window with this group.</h2>
+            </div>
+          </div>
+          <div class="group-editor-row">
             <div class="first-group-editor-button group-editor-button add-tab-button">
               <h1>Add</h1>
               <h2>the current tab to this group.</h2>
             </div>
-          </div>
-          <div class="group-editor-row">
             <div class="group-editor-button update-group-button">
               <h1>Update</h1>
               <h2>with the tabs in this window.</h2>
             </div>
+          </div>
+          <div class="group-editor-row">
             <div class="group-editor-button delete-group-button">
               <h1>Delete</h1>
               <h2>this group.</h2>
